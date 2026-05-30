@@ -15,8 +15,16 @@ All data lives **locally**. No network requests, ever.
 
 <p align="center">
   <img src="docs/screenshots/heatmap-preview.png" alt="Tapir daily click heatmap shareable export" width="900">
+</p>
+
+<p align="center">
+  <sub>
+  ↑ <strong>This is a click heatmap of an entire Mac screen, accumulated over one day.</strong> Every glowing dot is one real mouse click; the brighter a region, the more clicks landed there.
   <br>
-  <sub>↑ The share image Tapir produces at the end of a day. Privacy-safe by design: no window titles, no button text, no URLs — just a density visualization of click coordinates plus a handful of anonymous stats.</sub>
+  The horizontal band along the top is the browser tab bar / system menu bar; the bright cluster at the bottom-left is the Dock; the scatter in the middle is the content area of various app windows.
+  <br>
+  <strong>Privacy-safe by design</strong>: no window titles, no button text, no URLs — only anonymous coordinates plus aggregate stats (total clicks, top app, peak hour).
+  </sub>
 </p>
 
 > About the name: a tapir is a real animal whose name hides the word **tap** (as in *click*). In East Asian folklore, tapirs are said to eat the dreams you don't remember — a fitting metaphor for a tool that records the operations you don't notice yourself doing.
