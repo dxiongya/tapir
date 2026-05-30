@@ -5,7 +5,7 @@ let package = Package(
     name: "ClickInsight",
     platforms: [.macOS(.v14)],
     products: [
-        .executable(name: "ClickInsight", targets: ["ClickInsightApp"])
+        .executable(name: "Tapir", targets: ["ClickInsightApp"])
     ],
     targets: [
         .target(

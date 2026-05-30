@@ -50,8 +50,8 @@
 ```bash
 bash scripts/setup-identity.sh     # 创建稳定签名身份，TCC 授权能跨 build 保留
 bash scripts/make-icon.sh          # 生成 AppIcon.icns
-bash scripts/make-app.sh           # 编译 + 打包成 ClickInsight.app
-open ClickInsight.app
+bash scripts/make-app.sh           # 编译 + 打包成 Tapir.app
+open Tapir.app
 ```
 
 不跑 `setup-identity.sh` 也能用——只是每次 build 都会被 macOS 当成新 App，得重新授权 Accessibility。
@@ -132,7 +132,7 @@ sqlite3 ~/Library/Application\ Support/ClickInsight/events.db \
 
 ```bash
 swift build              # debug
-swift run ClickInsight   # 直接跑（缺 Info.plist，AX 弹窗文案会丢，仅快速 smoke test 用）
+swift run Tapir          # 直接跑（缺 Info.plist，AX 弹窗文案会丢，仅快速 smoke test 用）
 ```
 
 历史包名沿用 `ClickInsight`（Swift target / 可执行文件名 / Bundle ID），避免重置已有 TCC 授权。对外品牌一律 Tapir。

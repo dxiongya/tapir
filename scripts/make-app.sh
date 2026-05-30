@@ -7,24 +7,26 @@ cd "$ROOT"
 CONFIG="${CONFIG:-release}"
 BUNDLE_ID="app.clickinsight.local"
 IDENTITY_NAME="ClickInsight Local Dev"
+PRODUCT="Tapir"
 
 echo "==> swift build (-c $CONFIG)"
 swift build -c "$CONFIG"
 
 BIN_PATH="$(swift build -c "$CONFIG" --show-bin-path)"
-EXE="$BIN_PATH/ClickInsight"
+EXE="$BIN_PATH/$PRODUCT"
 
 if [[ ! -f "$EXE" ]]; then
   echo "Build artifact not found at $EXE"
   exit 1
 fi
 
-APP_DIR="$ROOT/ClickInsight.app"
+APP_DIR="$ROOT/$PRODUCT.app"
 echo "==> Assembling $APP_DIR"
-rm -rf "$APP_DIR"
+# Drop any previous bundle (incl. the legacy ClickInsight.app from before the rename)
+rm -rf "$APP_DIR" "$ROOT/ClickInsight.app"
 mkdir -p "$APP_DIR/Contents/MacOS"
 mkdir -p "$APP_DIR/Contents/Resources"
-cp "$EXE" "$APP_DIR/Contents/MacOS/ClickInsight"
+cp "$EXE" "$APP_DIR/Contents/MacOS/$PRODUCT"
 cp "$ROOT/Resources/Info.plist" "$APP_DIR/Contents/Info.plist"
 
 ICON_SRC="$ROOT/Resources/branding/AppIcon.icns"
@@ -64,6 +66,7 @@ fi
 if [[ "$RESET_TCC" == "true" ]]; then
   echo "==> Resetting TCC entries for $BUNDLE_ID (signing identity changed)"
   # Kill running instance so the new launch is a clean re-grant
+  pkill -f "$PRODUCT.app/Contents/MacOS" 2>/dev/null || true
   pkill -f "ClickInsight.app/Contents/MacOS" 2>/dev/null || true
   tccutil reset Accessibility "$BUNDLE_ID" 2>/dev/null || true
   tccutil reset ScreenCapture "$BUNDLE_ID" 2>/dev/null || true

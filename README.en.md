@@ -52,8 +52,8 @@ All data lives **locally**. No network requests, ever.
 ```bash
 bash scripts/setup-identity.sh     # Stable code-signing identity → TCC grants survive rebuilds
 bash scripts/make-icon.sh          # Generate AppIcon.icns from the SVG source
-bash scripts/make-app.sh           # Build + assemble ClickInsight.app
-open ClickInsight.app
+bash scripts/make-app.sh           # Build + assemble Tapir.app
+open Tapir.app
 ```
 
 You can skip `setup-identity.sh` — without it the app still works, but every rebuild has a fresh code identity, so macOS treats it as a new app and re-prompts for Accessibility each time.
@@ -135,7 +135,7 @@ To iterate on the logo: edit the SVG, run `bash scripts/make-icon.sh`, then `bas
 
 ```bash
 swift build                # debug
-swift run ClickInsight     # quick smoke test (no Info.plist → AX prompt copy will be missing)
+swift run Tapir            # quick smoke test (no Info.plist → AX prompt copy will be missing)
 ```
 
 Internal naming: the Swift target / executable / `CFBundleIdentifier` all still say `ClickInsight` to avoid resetting existing TCC grants. Public branding is always **Tapir**.

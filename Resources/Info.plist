@@ -5,7 +5,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
     <key>CFBundleExecutable</key>
-    <string>ClickInsight</string>
+    <string>Tapir</string>
     <key>CFBundleIdentifier</key>
     <string>app.clickinsight.local</string>
     <key>CFBundleInfoDictionaryVersion</key>
