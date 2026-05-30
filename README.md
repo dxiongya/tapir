@@ -1,5 +1,7 @@
 # Tapir / 貘
 
+**中文** · [English](README.en.md)
+
 <p align="center">
   <img src="Resources/branding/tapir-icon-v4.png" width="180" alt="Tapir icon">
 </p>
