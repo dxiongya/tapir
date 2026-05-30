@@ -168,8 +168,8 @@ struct HeatmapCard: View {
             showToast("生成图片失败"); return
         }
         let suggested = HeatmapSharing.suggestedFileName(for: report.date)
-        HeatmapSharing.saveAsPNG(composed, suggested: suggested) { url in
-            if url != nil { showToast("已保存") }
+        if HeatmapSharing.saveAsPNG(composed, suggested: suggested) != nil {
+            showToast("已保存")
         }
     }
 
