@@ -5,13 +5,20 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SRC="${1:-$ROOT/Resources/branding/tapir-icon-v2.png}"
+SRC="${1:-$ROOT/Resources/branding/tapir-icon.svg}"
 OUT="$ROOT/Resources/branding/AppIcon.icns"
 STAGE="$(mktemp -d)/AppIcon.iconset"
 
 if [[ ! -f "$SRC" ]]; then
-  echo "Source PNG not found: $SRC"
+  echo "Source not found: $SRC"
   exit 1
+fi
+
+# If input is SVG, rasterize to a 1024 PNG first.
+if [[ "$SRC" == *.svg ]]; then
+  PNG_FROM_SVG="$(mktemp -d)/source.png"
+  "$ROOT/scripts/svg-to-png.swift" "$SRC" 1024 "$PNG_FROM_SVG"
+  SRC="$PNG_FROM_SVG"
 fi
 
 mkdir -p "$STAGE"
