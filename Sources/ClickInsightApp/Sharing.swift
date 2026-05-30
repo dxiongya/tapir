@@ -201,7 +201,7 @@ struct ShareableHeatmap: View {
 
     private var footer: some View {
         HStack {
-            Text("clickinsight · 仅本地数据")
+            Text("tapir · 仅本地数据")
                 .font(.system(size: 10, design: .rounded))
                 .foregroundStyle(.white.opacity(0.3))
             Spacer()
