@@ -54,7 +54,7 @@ enum HeatmapSharing {
     static func suggestedFileName(for date: Date) -> String {
         let f = DateFormatter()
         f.dateFormat = "yyyy-MM-dd"
-        return "ClickInsight-\(f.string(from: date)).png"
+        return "Tapir-\(f.string(from: date)).png"
     }
 }
 
