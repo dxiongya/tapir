@@ -13,6 +13,12 @@
 
 All data lives **locally**. No network requests, ever.
 
+<p align="center">
+  <img src="docs/screenshots/heatmap-preview.png" alt="Tapir daily click heatmap shareable export" width="900">
+  <br>
+  <sub>↑ The share image Tapir produces at the end of a day. Privacy-safe by design: no window titles, no button text, no URLs — just a density visualization of click coordinates plus a handful of anonymous stats.</sub>
+</p>
+
 > About the name: a tapir is a real animal whose name hides the word **tap** (as in *click*). In East Asian folklore, tapirs are said to eat the dreams you don't remember — a fitting metaphor for a tool that records the operations you don't notice yourself doing.
 
 ---

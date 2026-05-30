@@ -12,6 +12,12 @@
 
 数据**只存本地**，无网络请求。
 
+<p align="center">
+  <img src="docs/screenshots/heatmap-preview.png" alt="Tapir 每日点击热力图分享样张" width="900">
+  <br>
+  <sub>↑ 一天结束 Tapir 自动出的分享图。完全去隐私：没有窗口标题、没有按钮文本、没有 URL，只有点击坐标的密度可视化 + 几个匿名统计。</sub>
+</p>
+
 > 命名小故事：Tapir 是貘。tap（点击）藏在动物名里；东亚神话里的貘会吃掉你不记得的梦——和「记录你自己都没意识到的操作」对得很自然。
 
 ---
