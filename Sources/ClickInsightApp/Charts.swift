@@ -60,6 +60,7 @@ struct HeatmapCard: View {
     @State private var image: NSImage?
     @State private var rendering: Bool = false
     @State private var toast: String?
+    @State private var toastTask: Task<Void, Never>?
 
     var body: some View {
         ReportCard(
@@ -151,32 +152,48 @@ struct HeatmapCard: View {
     }
 
     private func shareCopy() {
-        guard let image,
-              let composed = HeatmapSharing.makeShareImage(report: report, heatmap: image) else {
-            showToast("生成图片失败"); return
-        }
-        if HeatmapSharing.copyToClipboard(composed) {
-            showToast("已复制到剪贴板")
-        } else {
-            showToast("复制失败")
+        guard let image else { showToast("没有热力图"); return }
+        runExport(loadingText: "正在生成图片…") {
+            guard let composed = HeatmapSharing.makeShareImage(report: report, heatmap: image) else {
+                return "生成图片失败"
+            }
+            return HeatmapSharing.copyToClipboard(composed) ? "已复制到剪贴板" : "复制失败"
         }
     }
 
     private func shareSave() {
-        guard let image,
-              let composed = HeatmapSharing.makeShareImage(report: report, heatmap: image) else {
-            showToast("生成图片失败"); return
-        }
+        guard let image else { showToast("没有热力图"); return }
         let suggested = HeatmapSharing.suggestedFileName(for: report.date)
-        if HeatmapSharing.saveAsPNG(composed, suggested: suggested) != nil {
-            showToast("已保存")
+        guard let url = HeatmapSharing.askSaveURL(suggested: suggested) else { return }
+        runExport(loadingText: "正在导出…") {
+            guard let composed = HeatmapSharing.makeShareImage(report: report, heatmap: image) else {
+                return "生成图片失败"
+            }
+            return HeatmapSharing.writePNG(composed, to: url) ? "已保存" : "写入失败"
         }
     }
 
-    private func showToast(_ text: String) {
-        withAnimation(.easeInOut(duration: 0.2)) { toast = text }
+    /// Show a sticky loading toast, yield a frame so SwiftUI paints it, then run
+    /// the (slow, main-thread) work and replace the toast with the result.
+    private func runExport(loadingText: String, work: @escaping () -> String) {
+        showToast(loadingText, sticky: true)
         Task { @MainActor in
+            // Two yields + a tiny sleep guarantee the loading toast lands on
+            // screen before the ImageRenderer pass starts blocking main.
+            await Task.yield()
+            try? await Task.sleep(nanoseconds: 30_000_000) // 30 ms
+            let result = work()
+            showToast(result)
+        }
+    }
+
+    private func showToast(_ text: String, sticky: Bool = false) {
+        toastTask?.cancel()
+        withAnimation(.easeInOut(duration: 0.2)) { toast = text }
+        guard !sticky else { return }
+        toastTask = Task { @MainActor in
             try? await Task.sleep(nanoseconds: 1_800_000_000)
+            guard !Task.isCancelled else { return }
             withAnimation(.easeInOut(duration: 0.2)) { toast = nil }
         }
     }

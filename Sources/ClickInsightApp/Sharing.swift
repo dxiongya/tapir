@@ -21,27 +21,35 @@ enum HeatmapSharing {
         return pb.writeObjects([image])
     }
 
-    static func saveAsPNG(_ image: NSImage, suggested: String) -> URL? {
+    /// Cheap: just show the save panel and return the chosen URL. Use this first,
+    /// then render the image — that way the user can cancel without paying the
+    /// ImageRenderer cost and there's no main-thread freeze before the panel appears.
+    @MainActor
+    static func askSaveURL(suggested: String, title: String = "保存热力图") -> URL? {
         let panel = NSSavePanel()
         panel.allowedContentTypes = [.png]
         panel.nameFieldStringValue = suggested
         panel.canCreateDirectories = true
-        panel.title = "保存热力图"
+        panel.title = title
         panel.isExtensionHidden = false
 
-        // LSUIElement apps don't own focus the way regular apps do — without an
-        // explicit activate the save panel opens behind the report window and
-        // looks like the UI froze.
+        // LSUIElement apps don't own focus — without an explicit activate the
+        // save panel opens behind the report window and looks like a freeze.
         NSApp.activate(ignoringOtherApps: true)
         panel.level = .modalPanel
 
         guard panel.runModal() == .OK, let url = panel.url else { return nil }
-        guard let data = pngData(from: image) else { return nil }
+        return url
+    }
+
+    /// Write an already-rendered NSImage to disk as PNG.
+    static func writePNG(_ image: NSImage, to url: URL) -> Bool {
+        guard let data = pngData(from: image) else { return false }
         do {
             try data.write(to: url)
-            return url
+            return true
         } catch {
-            return nil
+            return false
         }
     }
 
